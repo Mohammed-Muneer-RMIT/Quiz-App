@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quiz App</title>
+  <style>
+    body{font-family:system-ui,Arial;max-width:720px;margin:0 auto;padding:16px}
+    .card{border:1px solid #ddd;border-radius:12px;padding:16px;margin-top:16px}
+    button{padding:8px 12px;border:1px solid #ccc;border-radius:8px;margin-top:8px}
+  </style>
+</head>
+<body>
+  <h1>Quiz App</h1>
+  <div class="card" id="quiz"></div>
+  <script>
+const questions=[
+  {q:'What is 2 + 2?', a:['3','4','5','22'], c:1},
+  {q:'Capital of Australia?', a:['Sydney','Melbourne','Canberra','Perth'], c:2},
+  {q:'Which language runs in a browser?', a:['Python','Java','C++','JavaScript'], c:3}
+];
+let i=0, score=0;
+function render(){
+  const el = document.getElementById('quiz');
+  if(i>=questions.length){
+    el.innerHTML = `<h3>Done!</h3><p>Score: ${score}/${questions.length}</p><button onclick="restart()">Restart</button>`;
+    return;
+  }
+  const q = questions[i];
+  el.innerHTML = `<h3>Q${i+1}. ${q.q}</h3>` + q.a.map((opt,idx)=>`<div><label><input type="radio" name="opt" value="${idx}"> ${opt}</label></div>`).join('') + `<button onclick="submit()">Submit</button>`;
+}
+function submit(){
+  const sel = document.querySelector('input[name="opt"]:checked');
+  if(!sel){ alert('Pick one'); return; }
+  if(parseInt(sel.value)===questions[i].c) score++;
+  i++; render();
+}
+function restart(){ i=0; score=0; render(); }
+render();
+  </script>
+</body>
+</html>
